@@ -30,15 +30,39 @@ async function send() {
     console.log('Sending notification');
     // send subscription option to backend and pass to sendnotification, which goes to SW
 
-    await fetch('/subscribe', {
-        method: 'POST',
-        body: JSON.stringify(subscription),
-        headers: {
-            'content-type': 'application/json'
-        }
-    });
-    console.log('Notification sent');
+    // output the notification (push) using function, "await" is old command
+    // await ('/subscribe', createNotification('Topic 1', '5 minutes'));
+    // console.log('Notification sent');
+
+    // test var:
+    randomTime = new Date().getTime();
+    randomTime = randomTime + Math.round(Math.floor(Math.random()*(100)));
+    console.log(randomTime);
+    testFunctionTimer(randomTime, 'Test Topic');
+    //createNotification('Topic 1', '5 minutes');
 } 
+
+function testFunctionTimer(endTime, currTopic) {
+    // initial endTime set
+    startTime = new Date().getTime();
+    currentTimestamp = new Date().getTime();
+    timeLeft = endTime-startTime;
+    createNotification(currTopic, timeLeft);
+}
+
+function createNotification(topic, time) { // create a notification based on topic and time left
+    var img = 'https://images-na.ssl-images-amazon.com/images/I/51EQz9ME%2BKL._SY355_.jpg';
+    if (time == 1) {
+        timeOut = '1 second';
+    } else if (time <= 60) { // if the time is less or equal to a minute, output in seconds
+        timeOut = Math.round(time) + ' seconds';
+    } else {
+        timeOut = (time/60) + ' minutes';
+    }
+    var text = `You have ${timeOut} left for ${topic}`;
+    var notification = new Notification('To Do', {body: text, icon:img});
+    return notification;
+}
 
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);

@@ -33,34 +33,43 @@ async function send() {
     // output the notification (push) using function, "await" is old command
     // await ('/subscribe', createNotification('Topic 1', '5 minutes'));
     // console.log('Notification sent');
-
-    // test var:
-    randomTime = new Date().getTime();
-    randomTime = randomTime + Math.round(Math.floor(Math.random()*(100)));
-    console.log(randomTime);
-    testFunctionTimer(randomTime, 'Test Topic');
-    //createNotification('Topic 1', '5 minutes');
 } 
 
-function testFunctionTimer(endTime, currTopic) {
+
+function testSend(waitTime) {
+        // test var:
+        endTime = new Date().getTime() + 240 + waitTime*1000;
+        startTime = new Date().getTime();
+        notifTime = new Date().getTime() + waitTime*1000;   
+        //createNotification('Topic 1', '5 minutes');
+        setTimeout(testFunctionTimer, waitTime*1000, notifTime, startTime, endTime, 'Rat');
+}
+
+function testFunctionTimer(notifTime, startTime, endTime, currTopic) {
+    // create a timer (a ten second delay in notification)
+
     // initial endTime set
     startTime = new Date().getTime();
-    currentTimestamp = new Date().getTime();
-    timeLeft = endTime-startTime;
+
+    console.log(endTime-startTime);
+    timeLeft = endTime-startTime;     
     createNotification(currTopic, timeLeft);
 }
 
 function createNotification(topic, time) { // create a notification based on topic and time left
     var img = 'https://images-na.ssl-images-amazon.com/images/I/51EQz9ME%2BKL._SY355_.jpg';
     if (time == 1) {
-        timeOut = '1 second';
+        timeOut = 'is 1 second';
     } else if (time <= 60) { // if the time is less or equal to a minute, output in seconds
-        timeOut = Math.round(time) + ' seconds';
+        timeOut = 'are ' + Math.round(time) + ' seconds';
     } else {
-        timeOut = (time/60) + ' minutes';
+        timeOut = 'are ' + (time/60) + ' minutes';
     }
-    var text = `You have ${timeOut} left for ${topic}`;
-    var notification = new Notification('To Do', {body: text, icon:img});
+    var text = `There ${timeOut} remaining for ${topic}`;
+    var notification = new Notification('To Do', {
+        body: text, 
+        icon:img
+    });
     return notification;
 }
 

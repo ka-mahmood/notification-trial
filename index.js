@@ -1,4 +1,5 @@
 // defining constants
+const cron = require('node-cron');
 const express = require('express');
 const webpush = require('web-push');
 const bodyParser = require('body-parser');
@@ -16,6 +17,11 @@ app.use (bodyParser.json());
 const publicVapidKey = 
     'BJXyGxIMu9nR-pDCAswU8cxnj3UpWTGyEZsYV0Y5CsIBtmbHa8CLm7oCG4xYgNywjs9c2UqQs9_fP5Wed_DyVT4';
 const privateVapidKey = 'DT0U2C3J75Hub1MCe3BAvv8x9s1k2JatFXSOM3YC53U';
+
+// schedule tasks 
+cron.schedule('10 * * * *', function() {
+    console.log('running a task every 10s');
+});
 
 // set VAPID keys using web-push, identify who is sending notification
 webpush.setVapidDetails(

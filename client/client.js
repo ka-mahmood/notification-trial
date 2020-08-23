@@ -72,7 +72,13 @@ function createNotification(topic, time) { // create a notification based on top
         body: text, 
         icon: img
     });
+    notifSound();
     return notification;
+}
+
+function notifSound() {
+    var audio = new Audio ('classic.mp3');
+    audio.play();
 }
 
 function urlBase64ToUint8Array(base64String) {

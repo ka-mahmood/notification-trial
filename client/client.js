@@ -8,6 +8,7 @@ if('serviceWorker' in navigator) { // navigator is browser internals
 }
 
 // function registers serviceWorker, registers push using browser api, send notification/push
+// required for permissions
 async function send() {
     // registering serviceWorker
     console.log('Registering SW');
@@ -35,17 +36,18 @@ async function send() {
     // console.log('Notification sent');
 } 
 
-
-function testSend(waitTime) {
+// function that sends request for notification and notes timeout 
+function sendRequest(waitTime) {
         // test var:
-        endTime = new Date().getTime() + 240 + waitTime*1000;
+        endTime = new Date().getTime() + 640 + waitTime*1000;
         startTime = new Date().getTime();
         notifTime = new Date().getTime() + waitTime*1000;   
         //createNotification('Topic 1', '5 minutes');
-        setTimeout(testFunctionTimer, waitTime*1000, notifTime, startTime, endTime, 'Rat');
+        waitTime = waitTime*1000; // in milliseconds
+        setTimeout(functionTimer, waitTime, notifTime, startTime, endTime, 'Topic 1');
 }
 
-function testFunctionTimer(notifTime, startTime, endTime, currTopic) {
+function functionTimer(notifTime, startTime, endTime, currTopic) {
     // create a timer (a ten second delay in notification)
 
     // initial endTime set
@@ -57,7 +59,7 @@ function testFunctionTimer(notifTime, startTime, endTime, currTopic) {
 }
 
 function createNotification(topic, time) { // create a notification based on topic and time left
-    var img = 'https://images-na.ssl-images-amazon.com/images/I/51EQz9ME%2BKL._SY355_.jpg';
+    var img = 'icon.jpg';
     if (time == 1) {
         timeOut = 'is 1 second';
     } else if (time <= 60) { // if the time is less or equal to a minute, output in seconds
@@ -66,9 +68,9 @@ function createNotification(topic, time) { // create a notification based on top
         timeOut = 'are ' + (time/60) + ' minutes';
     }
     var text = `There ${timeOut} remaining for ${topic}`;
-    var notification = new Notification('To Do', {
+    var notification = new Notification('Times Up! Notification', {
         body: text, 
-        icon:img
+        icon: img
     });
     return notification;
 }
